@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>Tank Gauge</title>
+<script type="text/javascript" src="http://static.fusioncharts.com/code/latest/fusioncharts.js"></script>
+<script type="text/javascript" src="http://static.fusioncharts.com/code/latest/themes/fusioncharts.theme.fint.js?cacheBust=56"></script>
+<script type="text/javascript">
+  FusionCharts.ready(function(){
+    var fusioncharts = new FusionCharts({
+    type: 'cylinder',
+    dataFormat: 'json',
+    id: 'fuelMeter-1',
+    renderAt: 'chart-container',
+    width: '250',
+    height: '350',
+    dataSource: {
+        "chart": {
+            "theme": "fint",
+            "caption": "Diesel Level in Generator",
+            "subcaption": "Bakersfield Central",
+            "lowerLimit": "0",
+            "upperLimit": "120",
+            "lowerLimitDisplay": "Empty",
+            "upperLimitDisplay": "Full",
+            "numberSuffix": " ltrs",
+            "showValue": "1",
+            "chartBottomMargin": "25"
+        },
+        "value": "50"
+    },
+    "events": {
+        "rendered": function(evtObj, argObj) {
+            var fuelVolume = 110,
+                gaugeRef = evtObj.sender;
+            gaugeRef.chartInterval = setInterval(function() {
+
+                (fuelVolume < 10) ? (fuelVolume = 110) : "";
+                var consVolume = fuelVolume - (Math.floor(Math.random() * 3));
+                gaugeRef.feedData("&value=" + consVolume);
+                fuelVolume = consVolume;
+            }, 500);
+        },
+        "disposed": function(evt, arg) {
+            clearInterval(evt.sender.chartInterval);
+        }
+    }
+}
+);
+    fusioncharts.render();
+});
+</script>
+</head>
+<body>
+  <div id="chart-container">FusionCharts XT will load here!</div>
+</body>
+</html>

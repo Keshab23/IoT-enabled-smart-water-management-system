@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <script type="text/javascript" src="{{url_for('static', filename='bootstrap.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='bootstrap.min.css') }}" media="screen" title="no title" charset="utf-8">
+    <title> Home Page</title>
+  </head>
+
+  <nav class="nav navbar-inverse">
+  <div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">Smart Water Management</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="nav">
+    <ul class="nav navbar-nav">
+      <li class="active" ><a href="/">Home<span class="sr-only">(current)</span></a></li>
+      <li ><a href="/water">Water</a></li>
+      <li><a href="/energy">Energy</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+  </nav>
+
+  <body background="/static/back.jpg">
+     <h1 style="color:#3A0761; font-size:370%;font-family:verdana;" align="center" font-size="5.0em">1Tuch&nbsp;</h1>
+    <h2 align="center">A Complete Iot Based Home Automation Solution &nbsp</h1>
+   <ul>
+     <li>  <h1>Iot based Real Time Water Monitoring System.</h1></li>
+     <li> <h1>Water Consumption Statistics.</h1></li>
+     <li>  <h1>Remote/Automatic Water Pumping System.</h1></li>
+     <li>   <h1>Remote Home Appliances Control.</h1></li>
+     <li>  <h1>Real Time Energy Meter.</h1></li>
+     <li>   <h1>Low Cost.</h1></li>
+   </ul>
+
+  </body>
+</html>

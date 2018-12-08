@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- <script type="text/javascript" src="{{url_for('static', filename='bootstrap.min.js') }}"></script> -->
+    <link rel="stylesheet" href="static/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/3.css" type="text/css">
+    <title>Energy</title>
+    <script type="text/javascript" src="{{url_for('static', filename='jquery-3.1.1.min.js') }}"></script>
+
+    <script type="text/javascript">
+
+  $(document).ready(function(){
+    d = new Date();
+  })
+  var change_status = function(option){
+    $.ajax({
+      url : '/change/'+option,
+      method : 'GET',
+      success : function(data){
+
+      }
+    })
+  }
+
+  </script>
+
+
+
+  </head>
+  <body>
+
+    <nav class="nav navbar-inverse">
+    <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Smart Water Management</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="nav navbar-nav">
+        <li ><a href="/">Home<span class="sr-only">(current)</span></a></li>
+        <li ><a href="/water">Water</a></li>
+        <li class="active"><a href="/energy">Energy</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container">
+
+  <div class="row">
+
+    <hr>
+
+    <div class="col-md-4 col-md-push-4">
+
+      <img padding="10%" src="/static/house.jpg" height="50%" width="50%" margin="5%" >
+        <br> <br>
+        <div id = 'a1on' onclick="change_status('a1on')" class="btn btn-success">Appliance 2 ON</div>
+        <div id = 'a1off' onclick="change_status('a1off')" class="btn btn-danger">Appliance 2 OFF</div>
+    </div>
+
+    <div class="col-md-4 col-md-pull-4 ">
+
+      <img  src="/static/house.jpg" height="50%" width="50%" margin="5%" >
+      <br><br>
+      <div id = 'a2on' onclick="change_status('a2on')" class="btn btn-success">Appliance 1 ON</div>
+      <div id = 'a2off' onclick="change_status('a2off')" class="btn btn-danger">Appliance 1 OFF</div>
+    </div>
+
+    <div class="col-md-4">
+    <h1>Powee: <span id = "power">0</span></h1>
+    <br>
+    <h1>world <span>gfgf</span></h1>
+    </div>
+
+  </div>
+
+<hr>
+
+
+
+
+
+
+  </body>
+</html>

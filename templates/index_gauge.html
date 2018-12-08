@@ -1,0 +1,192 @@
+
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <title>1Tuch gauge</title>
+    <script type="text/javascript" src="../static/fusioncharts.js"></script>
+    <script type="text/javascript" src="../static/fusioncharts.theme.fint.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='jquery-3.1.1.min.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{url_for('static', filename='fusioncharts.theme.fint.js') }}"></script> -->
+    <script type="text/javascript" src="{{url_for('static', filename='bootstrap.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{url_for('static', filename='fusioncharts-jquery-plugin.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap.min.css') }}" media="screen" title="no title" charset="utf-8">
+    <script type="text/javascript">
+      var ds1 = {
+          "chart": {
+            "theme": "fint",
+            "caption": "Overhead Tank Level",
+            "subcaption": "Zairza",
+            "lowerLimit": "0",
+            "upperLimit": "40",
+            "lowerLimitDisplay": "Empty",
+            "upperLimitDisplay": "Full",
+            "numberSuffix": " ltrs",
+            "showValue": "1",
+        },
+        "value": 0
+      }
+      var ds2 = {
+          "chart": {
+            "theme": "fint",
+            "caption": "Sump Tank Level",
+            "subcaption": "Zairza",
+            "lowerLimit": "0",
+            "upperLimit": "40",
+            "lowerLimitDisplay": "Empty",
+            "upperLimitDisplay": "Full",
+            "numberSuffix": " ltrs",
+            "showValue": "1",
+        },
+        "value": 0
+      }
+      $(document).ready(function(){
+
+          setInterval(function(){
+            $.ajax({
+            //url : '/return_global',
+            url :'/return_global',
+            method : 'GET',
+            success : function(response){
+              $('#status1').html(response.tank1);
+              $('#status2').html(response.tank2);
+              $('#status6').html(response.net);
+              $('#status3').html(response.stat);
+              $('#status5').html(response.time);
+              ds1.value = response.tank1
+              ds2.value = response.tank2
+              $('#chart-container-1').updateFusionCharts({dataSource:ds1})
+              $('#chart-container-2').updateFusionCharts({dataSource:ds2})
+            }
+          })
+        },800);
+        $('#chart-container-1').insertFusionCharts({
+          type: 'cylinder',
+          dataFormat: 'json',
+          id: 'tank1',
+          renderAt: 'chart-container',
+          width: '250',
+          height: '350',
+          dataSource: ds1
+        })
+
+        $('#chart-container-2').insertFusionCharts({
+          type: 'cylinder',
+          dataFormat: 'json',
+          id: 'tank2',
+          renderAt: 'chart-container',
+          width: '250',
+          height: '350',
+          dataSource: ds2
+        })
+    })
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      d = new Date();
+      document.getElementById("date_now").innerHTML = d.toDateString()
+    })
+    var change_status = function(option){
+      $.ajax({
+        url : '/change/'+option,
+        method : 'GET',
+        success : function(data){
+          console.log(data);
+          document.getElementById("status4").innerHTML = data.toUpperCase()
+          $('#auto').removeClass('disabled')
+          $('#on').removeClass('disabled')
+          $('#off').removeClass('disabled')
+          $('#'+data).addClass('disabled')
+        }
+      })
+    }
+  </script>
+
+  </head>
+  <body >
+    <nav class="nav navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Smart Water Management</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="nav navbar-nav">
+        <li ><a href="/">Home<span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="/water">Water</a></li>
+        <li><a href="/energy">Energy</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="row">
+  <div class="col-md-2 col-md-offset-10">
+    <h4 id = 'date_now'></h4>
+  </div>
+</div>
+<div class="row">
+<div class="col-md-4 col-md-offset-1" class="mode">
+
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+      <h3>Mode Selected : <span id='status4'>No Data</span></h3>
+      <div id = 'auto'onclick="change_status('auto')" class="btn btn-primary">Auto</div>
+      <div id = 'off' onclick="change_status('off')" class="btn btn-primary">Remote OFF</div>
+      <div id = 'on' onclick="change_status('on')" class="btn btn-primary">Remote ON</div>
+      <button margin="20%" type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Open Modal</button>
+</div>
+
+    </div>
+  </div>
+
+  </div>
+</div>
+
+    <div class="tank1" style="float:left;margin-left:100px">
+      <h2>Overhead Tank Level</h2>
+      <h1 style="margin-left:100px" id='status1'>No Data</h1>
+        <div id="chart-container-1">Tank 1 will load here</div>
+    </div>
+
+    <div class="tank2" style="float:right;margin-right:100px">
+      <h2>Sump Tank Level</h2>
+      <h1 style="margin-left:100px" id='status2'>No Data</h1>
+      <div id='chart-container-2'>Tank 2 will load here</div>
+    </div>
+
+    <h1 style="float:left;margin-left:100px; margin-top:350px"> Motor Status:</h1>
+    <h1 style="float:left;margin-left:20px; margin-top:350px" id= "status3">No Data</h1>
+
+    <h1 style=" position:absolute; margin-left:500px"> On Time: <span id="status5">0</span>sec</h1>
+    <h1 style=" position:absolute; margin-left:500px; margin-top:50px"> Net Water: <span id="status6"></span> ltrs</h1>
+
+
+
+
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+          <img  src="/static/graph.png" style="width:580px;height:500px">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  </body>
+</html>
