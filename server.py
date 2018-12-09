@@ -19,13 +19,21 @@ logged_in = False
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        print("Connected to broker")
         global Connected                #Use global variable
         Connected = True                #Signal connection 
- 
+        client.subscribe("WaterManagement/LevelData",0)  
     else:
         print("Connection failed")
 
+def on_message(client, userdata, message):
+   requestTopic = message.topic
+   payload=message.payload.decode()
+   global tank5data
+   tank5data = payload
+#  print(payload)
+   requestID = requestTopic.split('/')[3]       # obtain requestID as last field from the topic
+   lTime = strftime('%H:%M:%S', localtime())
+   client.publish((responseTopic + requestID), payload=lTime, qos=0, retain=False)
 
 # MQTT connection
 Connected = False #global variable for the state of the connection
@@ -36,7 +44,8 @@ password = "rPoyUPthnjdI"
 
 client = mqttClient.Client("Python")
 client.username_pw_set(user, password=password)
-client.on_connect= on_connect
+client.on_connect = on_connect
+# client.on_message = on_message
 client.connect(broker_address, port=port)
 client.loop_start()
 while Connected != True:    #Wait for connection
@@ -52,8 +61,8 @@ while Connected != True:    #Wait for connection
 #     client.loop_stop()
 
 power =0
-tank1data = 40
-tank2data = 40
+tank1data = 50
+tank2data = 30
 current =  "OFF"
 option = ""
 ontime = 0
@@ -140,7 +149,7 @@ def power(p):
 def change(switch):
     global option
     option = switch
-    print(switch);
+    print(switch)
     client.publish("WaterManagement/Control",option)
     return option
 
@@ -203,6 +212,8 @@ def show_post2(depth_cm2):
 
 @app.route('/return_global', methods=['GET'])
 def return_global():
+    client.on_message = on_message
+    print(tank5data)
     global tank1data
     global tank2data
     global current
@@ -223,7 +234,7 @@ def return_global():
             f = diff.microseconds
             ontime = ontime + f
 
-    return jsonify(tank1 = tank1data , tank2 = tank2data, stat = current, time = ontime/1000000, net= netlitres)
+    return jsonify(tank1 = tank5data , tank2 = tank2data, stat = current, time = ontime/1000000, net= netlitres)
 
 
 if __name__ == "__main__":
