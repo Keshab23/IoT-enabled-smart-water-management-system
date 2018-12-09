@@ -5,6 +5,8 @@
 from flask import Flask, render_template, url_for
 from flask import jsonify, request
 from flask import flash, redirect,abort
+import paho.mqtt.client as mqttClient
+import time
 
 import datetime as d
 app = Flask(__name__)
@@ -14,6 +16,40 @@ prevtank1 = 10
 diff = 0
 x = 0
 logged_in = False
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to broker")
+        global Connected                #Use global variable
+        Connected = True                #Signal connection 
+ 
+    else:
+        print("Connection failed")
+
+
+# MQTT connection
+Connected = False #global variable for the state of the connection
+broker_address= "m15.cloudmqtt.com"
+port = 15400
+user = "bhjdgsiu"
+password = "rPoyUPthnjdI"
+
+client = mqttClient.Client("Python")
+client.username_pw_set(user, password=password)
+client.on_connect= on_connect
+client.connect(broker_address, port=port)
+client.loop_start()
+while Connected != True:    #Wait for connection
+    time.sleep(0.1)
+
+# try:
+#     while True:
+#         value = input('Enter the message:')
+#         client.publish("WaterManagement/Control",value)
+ 
+# except KeyboardInterrupt:
+#     client.disconnect()
+#     client.loop_stop()
 
 power =0
 tank1data = 40
@@ -104,6 +140,8 @@ def power(p):
 def change(switch):
     global option
     option = switch
+    print(switch);
+    client.publish("WaterManagement/Control",option)
     return option
 
 
