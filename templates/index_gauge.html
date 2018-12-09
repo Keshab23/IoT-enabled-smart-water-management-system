@@ -52,7 +52,6 @@
               $('#status1').html(response.tank1);
               $('#status2').html(response.tank2);
               $('#status6').html(response.net);
-              $('#status3').html(response.stat);
               $('#status5').html(response.time);
               ds1.value = response.tank1
               ds2.value = response.tank2
@@ -95,6 +94,7 @@
         success : function(data){
           console.log(data);
           document.getElementById("status4").innerHTML = data.toUpperCase()
+          $('#status3').html(option);
           $('#auto').removeClass('disabled')
           $('#on').removeClass('disabled')
           $('#off').removeClass('disabled')
