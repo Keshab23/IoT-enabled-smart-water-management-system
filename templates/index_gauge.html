@@ -3,7 +3,7 @@
   <head>
 
     <meta charset="utf-8">
-    <title>1Tuch gauge</title>
+    <title>Water Data</title>
     <script type="text/javascript" src="../static/fusioncharts.js"></script>
     <script type="text/javascript" src="../static/fusioncharts.theme.fint.js"></script>
     <script type="text/javascript" src="{{url_for('static', filename='jquery-3.1.1.min.js') }}"></script>
@@ -16,8 +16,8 @@
       var ds1 = {
           "chart": {
             "theme": "fint",
-            "caption": "Overhead Tank Level",
-            "subcaption": "Zairza",
+            "caption": "Water Level",
+            "subcaption": "IE1",
             "lowerLimit": "0",
             "upperLimit": "40",
             "lowerLimitDisplay": "Empty",
@@ -30,8 +30,8 @@
       var ds2 = {
           "chart": {
             "theme": "fint",
-            "caption": "Sump Tank Level",
-            "subcaption": "Zairza",
+            "caption": "Water Level",
+            "subcaption": "IE2",
             "lowerLimit": "0",
             "upperLimit": "40",
             "lowerLimitDisplay": "Empty",
@@ -144,6 +144,7 @@
     <div class="panel panel-primary">
       <div class="panel-body">
       <h3>Mode Selected : <span id='status4'>No Data</span></h3>
+      <h3>Remote Water Supply Control Status: <span id='status4'>No Data</span></h3>
       <!-- <div id = 'auto'onclick="change_status('auto')" class="btn btn-primary">Auto</div> -->
       <div id = 'off' onclick="change_status('off')" class="btn btn-primary">Remote OFF</div>
       <div id = 'on' onclick="change_status('on')" class="btn btn-primary">Remote ON</div>
@@ -157,13 +158,13 @@
 </div>
 
     <div class="tank1" style="float:left;margin-left:100px">
-      <h2>Overhead Tank Level</h2>
+      <h2>Water Tank 1</h2>
       <h1 style="margin-left:100px" id='status1'>No Data</h1>
         <div id="chart-container-1">Tank 1 will load here</div>
     </div>
 
     <div class="tank2" style="float:right;margin-right:100px">
-      <h2>Sump Tank Level</h2>
+      <h2>Water Tank 2</h2>
       <h1 style="margin-left:100px" id='status2'>No Data</h1>
       <div id='chart-container-2'>Tank 2 will load here</div>
     </div>
@@ -171,8 +172,8 @@
     <h1 style="float:left;margin-left:100px; margin-top:350px"> Motor Status:</h1>
     <h1 style="float:left;margin-left:20px; margin-top:350px" id= "status3">No Data</h1>
 
-    <h1 style=" position:absolute; margin-left:500px"> On Time: <span id="status5">0</span>sec</h1>
-    <h1 style=" position:absolute; margin-left:500px; margin-top:50px"> Net Water: <span id="status6"></span> ltrs</h1>
+    <!-- <h1 style=" position:absolute; margin-left:500px"> On Time: <span id="status5">0</span>sec</h1>
+    <h1 style=" position:absolute; margin-left:500px; margin-top:50px"> Net Water: <span id="status6"></span> ltrs</h1> -->
 
 
 

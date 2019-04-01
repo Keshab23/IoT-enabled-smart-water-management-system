@@ -7,6 +7,7 @@ from flask import jsonify, request
 from flask import flash, redirect,abort
 import paho.mqtt.client as mqttClient
 import time
+import random
 
 import datetime as d
 app = Flask(__name__)
@@ -28,6 +29,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, message):
    requestTopic = message.topic
    payload=message.payload.decode()
+   print("message received")
    global tank5data
    tank5data = payload
 #  print(payload)
@@ -45,7 +47,7 @@ password = "rPoyUPthnjdI"
 client = mqttClient.Client("Python")
 client.username_pw_set(user, password=password)
 client.on_connect = on_connect
-# client.on_message = on_message
+# client.on_m6wessage = on_message
 client.connect(broker_address, port=port)
 client.loop_start()
 while Connected != True:    #Wait for connection
@@ -62,7 +64,8 @@ while Connected != True:    #Wait for connection
 
 power =0
 tank1data = 50
-tank2data = 30
+tank5data = 0
+tank2data = random.randint(0,40)
 current =  "OFF"
 option = ""
 ontime = 0
@@ -213,8 +216,8 @@ def show_post2(depth_cm2):
 @app.route('/return_global', methods=['GET'])
 def return_global():
     client.on_message = on_message
-    print(tank5data)
-    global tank1data
+    # print(tank5data)
+    global tank5data
     global tank2data
     global current
     global ontime
@@ -233,7 +236,7 @@ def return_global():
             lastOffTime = d.datetime.now()
             f = diff.microseconds
             ontime = ontime + f
-
+    print(tank1data)
     return jsonify(tank1 = tank5data , tank2 = tank2data, stat = current, time = ontime/1000000, net= netlitres)
 
 

@@ -10,9 +10,9 @@
 
     <script type="text/javascript">
 
-  $(document).ready(function(){
-    d = new Date();
-  })
+  // $(document).ready(function(){
+  //   d = new Date();
+  // })
   var change_status = function(option){
     $.ajax({
       url : '/change/'+option,
@@ -22,7 +22,20 @@
       }
     })
   }
-
+  $(document).ready(function(){
+          console.log("called")
+          setInterval(function(){
+            $.ajax({
+            //url : '/return_global',
+            url :'/return_global',
+            method : 'GET',
+            success : function(response){
+              $('#power1').html(response.tank1);
+              $('#power2').html(response.tank2);
+            }
+          })
+        },800);
+      });
   </script>
 
 
@@ -81,10 +94,10 @@
 
     <div class="col-md-12">
       <div class="col-md-6">
-          <h1>Power: <span id = "power">0</span></h1>
+          <h1>Consumption Energy: <span id = "power1">No data</span></h1>
       </div>
       <div class="col-md-6">
-          <h1>Power: <span id = "power">0</span></h1>
+          <h1>Consumption Energy: <span id = "power2">No data</span></h1>
       </div> 
     </div>
 
