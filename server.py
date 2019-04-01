@@ -121,6 +121,13 @@ def energy():
     else:
         return redirect('/login')
 
+@app.route('/viz', methods=['GET'])
+def viz():
+    if logged_in:
+        return render_template('viz.html')
+    else:
+        return redirect('/login')
+
 '''@app.route('/power/<int:p>', methods=['GET'])
 def power():
     global power

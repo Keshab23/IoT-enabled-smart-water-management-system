@@ -1,0 +1,181 @@
+
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <title>1Tuch gauge</title>
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+	  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='jquery-3.1.1.min.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{url_for('static', filename='fusioncharts.theme.fint.js') }}"></script> -->
+    <script type="text/javascript" src="{{url_for('static', filename='bootstrap.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{url_for('static', filename='fusioncharts-jquery-plugin.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap.min.css') }}" media="screen" title="no title" charset="utf-8">
+    <script type="text/javascript">
+      const dataSource = [
+          {
+            "value": "89.45"
+          },
+          {
+            "value": "89.87"
+          },
+          {
+            "value": "89.64"
+          },
+          {
+            "value": "90.13"
+          },
+          {
+            "value": "90.67"
+          },
+        ];
+
+      FusionCharts.ready(function(){
+			var chartObj = new FusionCharts({
+    id: "realtime",
+    type: 'realtimeline',
+    renderAt: 'chart-container',
+    width: '1000',
+    height: '600',
+    dataFormat: 'json',
+    dataSource: {
+        "chart": {
+            "theme": "fusion",
+            "caption": "Tracking of Water consumption",
+            "yAxisName": "Quantity",
+            "lineThickness": "2"
+        },
+        "dataset": [{
+          "seriesname": "Tank1",
+          "data": []
+        },
+        {
+          "seriesname": "Tank2",
+          "data": []
+        }
+        ],
+    },
+    "events": {
+          "initialized": function(e) {
+            function updateData(value1, value2) {
+              let chartRef = FusionCharts("realtime")
+              chartRef.feedData(`&value=${value1}|${value2}`)
+            }
+            let timer = setInterval(() => {
+              $.ajax({
+              //url : '/return_global',
+              url :'/return_global',
+              method : 'GET',
+              success : function(response){
+                updateData(response.tank1, response.tank2)
+              }
+            })
+          }, 800);
+        }
+    }
+});
+			chartObj.render();
+		});
+     /* $(document).ready(function(){
+
+          setInterval(function(){
+            $.ajax({
+            //url : '/return_global',
+            url :'/return_global',
+            method : 'GET',
+            success : function(response){
+              dataSource.push({
+                value: response.tank1
+              })
+              /* ds1.value = response.tank1
+              ds2.value = response.tank2 
+              $('#chart-container').updateFusionCharts({dataSource}) 
+            }
+          })
+        },800);
+    })*/
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      d = new Date();
+      document.getElementById("date_now").innerHTML = d.toDateString()
+    })
+    var change_status = function(option){
+      $.ajax({
+        url : '/change/'+option,
+        method : 'GET',
+        success : function(data){
+          console.log(data);
+          document.getElementById("status4").innerHTML = data.toUpperCase()
+          $('#status3').html(option);
+          $('#auto').removeClass('disabled')
+          $('#on').removeClass('disabled')
+          $('#off').removeClass('disabled')
+          $('#'+data).addClass('disabled')
+        }
+      })
+    }
+  </script>
+
+  </head>
+  <body >
+    <nav class="nav navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Smart Water Management</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="nav navbar-nav">
+        <li ><a href="/">Home<span class="sr-only">(current)</span></a></li>
+        <li><a href="/water">Water</a></li>
+        <li><a href="/energy">Energy</a></li>
+        <li class="active"><a href="/viz">Visualization</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="row">
+  <div class="col-md-2 col-md-offset-10">
+    <h4 id = 'date_now'></h4>
+  </div>
+</div>
+<div class="row">
+<div class="col-md-4 col-md-offset-1" class="mode">
+
+
+  </div>
+</div>
+
+    <div class="tank1" style="float:left;margin-left:100px">
+      <h2>Tank data Visualization</h2>
+        <div id="chart-container">Viz will load here</div>
+    </div>
+
+
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+          <img  src="/static/graph.png" style="width:580px;height:500px">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  </body>
+</html>
