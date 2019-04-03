@@ -160,7 +160,7 @@ def change(switch):
     global option
     option = switch
     print(switch)
-    client.publish("WaterManagement/Control",option)
+    client.publish("WaterManagement/remote",option)
     return option
 
 
